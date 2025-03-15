@@ -45,10 +45,10 @@ class LiveViewPage extends StatefulWidget {
 }
 
 class _LiveViewPageState extends State<LiveViewPage>
-    with WidgetsBindingObserver, ApiVideoLiveStreamEventsListener {
+    with WidgetsBindingObserver {
   final ButtonStyle buttonStyle =
       ElevatedButton.styleFrom(textStyle: const TextStyle(fontSize: 20));
-  Params params = Params();
+  Params config = Params();
   late final ApiVideoLiveStreamController _controller;
   bool _isStreaming = false;
 
@@ -56,23 +56,12 @@ class _LiveViewPageState extends State<LiveViewPage>
   void initState() {
     WidgetsBinding.instance.addObserver(this);
 
-    getAvailableCameraInfos()
-        .then((cameraInfos) => print("Available cameras: $cameraInfos"));
-
     _controller = createLiveStreamController();
+
     _controller.initialize().catchError((e) {
       showInSnackBar(e.toString());
     });
-
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    _controller.removeEventsListener(this);
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -89,44 +78,33 @@ class _LiveViewPageState extends State<LiveViewPage>
     }
   }
 
-  void onConnectionSuccess() {
-    print('Connection succeeded');
-  }
-
-  void onConnectionFailed(String reason) {
-    print('Connection failed: $reason');
-    _showDialog(context, 'Connection failed', '$reason');
-    if (mounted) {
-      setIsStreaming(false);
-    }
-  }
-
-  void onDisconnection() {
-    showInSnackBar('Disconnected');
-    if (mounted) {
-      setIsStreaming(false);
-    }
-  }
-
-  void onError(Exception error) {
-    // Get error such as missing permission,...
-    if (error is PlatformException) {
-      _showDialog(
-          context, "Error", error.message ?? "An unknown error occurred");
-    } else {
-      _showDialog(context, "Error", "$error");
-    }
-    if (mounted) {
-      setIsStreaming(false);
-    }
-  }
-
   ApiVideoLiveStreamController createLiveStreamController() {
-    final controller = ApiVideoLiveStreamController(
-        initialAudioConfig: params.audioConfig,
-        initialVideoConfig: params.videoConfig);
-    controller.addEventsListener(this);
-    return controller;
+    return ApiVideoLiveStreamController(
+        initialAudioConfig: config.audio,
+        initialVideoConfig: config.video,
+        onConnectionSuccess: () {
+          print('Connection succeeded');
+        },
+        onConnectionFailed: (error) {
+          print('Connection failed: $error');
+          _showDialog(context, 'Connection failed', '$error');
+          if (mounted) {
+            setIsStreaming(false);
+          }
+        },
+        onDisconnection: () {
+          showInSnackBar('Disconnected');
+          if (mounted) {
+            setIsStreaming(false);
+          }
+        },
+        onError: (error) {
+          // Get error such as missing permission,...
+          _showDialog(context, 'Error', '$error');
+          if (mounted) {
+            setIsStreaming(false);
+          }
+        });
   }
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -160,8 +138,7 @@ class _LiveViewPageState extends State<LiveViewPage>
                     child: Padding(
                       padding: const EdgeInsets.all(1.0),
                       child: Center(
-                        child: ApiVideoCameraPreview(
-                            controller: _controller, enableZoomOnPinch: true),
+                        child: ApiVideoCameraPreview(controller: _controller),
                       ),
                     ),
                   ),
@@ -183,9 +160,9 @@ class _LiveViewPageState extends State<LiveViewPage>
     await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => SettingsScreen(params: params)));
-    _controller.setVideoConfig(params.videoConfig);
-    _controller.setAudioConfig(params.audioConfig);
+            builder: (context) => SettingsScreen(params: config)));
+    _controller.setVideoConfig(config.video);
+    _controller.setAudioConfig(config.audio);
   }
 
   /// Display the control bar with buttons to take pictures and record videos.
@@ -239,7 +216,7 @@ class _LiveViewPageState extends State<LiveViewPage>
       return;
     }
 
-    return await liveStreamController.toggleCamera();
+    return await liveStreamController.switchCamera();
   }
 
   Future<void> toggleMicrophone() async {
@@ -262,7 +239,7 @@ class _LiveViewPageState extends State<LiveViewPage>
     }
 
     return await controller.startStreaming(
-        streamKey: params.streamKey, url: params.rtmpUrl);
+        streamKey: config.streamKey, url: config.rtmpUrl);
   }
 
   Future<void> stopStreaming() async {
@@ -326,7 +303,14 @@ class _LiveViewPageState extends State<LiveViewPage>
       if (mounted) {
         setIsStreaming(false);
       }
-    }).catchError((error) {});
+    }).catchError((error) {
+      if (error is PlatformException) {
+        _showDialog(
+            context, "Error", "Failed to stop stream: ${error.message}");
+      } else {
+        _showDialog(context, "Error", "Failed to stop stream: $error");
+      }
+    });
   }
 
   void setIsStreaming(bool isStreaming) {
