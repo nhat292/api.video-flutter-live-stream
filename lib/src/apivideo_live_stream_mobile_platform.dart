@@ -104,6 +104,13 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
     }
   }
 
+  @override
+  Future<void> setScore({required String score}) {
+    return _channel.invokeMethod('setScore', <String, dynamic>{
+      'score': score,
+    });
+  }
+
   /// Builds the preview widget.
   @override
   Widget buildPreview(int textureId) {

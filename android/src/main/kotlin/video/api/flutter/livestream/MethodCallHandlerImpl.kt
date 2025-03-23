@@ -4,11 +4,13 @@ import android.content.Context
 import android.os.Handler
 import android.os.Looper
 import android.util.Size
+import android.widget.Toast
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.view.TextureRegistry
+import io.github.thibaultbee.streampack.internal.gl.Texture2DProgram
 import video.api.flutter.livestream.utils.addTrailingSlashIfNeeded
 import video.api.flutter.livestream.utils.toAudioConfig
 import video.api.flutter.livestream.utils.toVideoConfig
@@ -230,6 +232,11 @@ class MethodCallHandlerImpl(
                 } catch (e: Exception) {
                     result.error("failed_to_get_video_size", e.message, null)
                 }
+            }
+
+            "setScore" -> {
+                val score = call.argument<String?>("score") ?: ""
+                Texture2DProgram.SCORE = score
             }
 
             else -> result.notImplemented()

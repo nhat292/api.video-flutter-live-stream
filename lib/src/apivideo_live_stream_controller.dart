@@ -192,6 +192,10 @@ class ApiVideoLiveStreamController {
     return _platform.getVideoSize();
   }
 
+  Future<void> setScore({required String score}) {
+    return _platform.setScore(score: score);
+  }
+
   /// Builds the preview widget.
   @internal
   Widget buildPreview() {
