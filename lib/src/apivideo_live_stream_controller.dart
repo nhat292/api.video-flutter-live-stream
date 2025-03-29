@@ -192,8 +192,8 @@ class ApiVideoLiveStreamController {
     return _platform.getVideoSize();
   }
 
-  Future<void> setScore({required String score}) {
-    return _platform.setScore(score: score);
+  Future<void> setScore({required String text1, required String text2, required String text3, required String text4}) {
+    return _platform.setScore(text1: text1, text2: text2, text3: text3, text4: text4);
   }
 
   /// Builds the preview widget.

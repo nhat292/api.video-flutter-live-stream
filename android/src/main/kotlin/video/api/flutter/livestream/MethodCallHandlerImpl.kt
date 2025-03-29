@@ -235,8 +235,14 @@ class MethodCallHandlerImpl(
             }
 
             "setScore" -> {
-                val score = call.argument<String?>("score") ?: ""
-                Texture2DProgram.SCORE = score
+                val text1 = call.argument<String?>("text1") ?: ""
+                val text2 = call.argument<String?>("text2") ?: ""
+                val text3 = call.argument<String?>("text3") ?: ""
+                val text4 = call.argument<String?>("text4") ?: ""
+                Texture2DProgram.TEXT1 = text1
+                Texture2DProgram.TEXT2 = text2
+                Texture2DProgram.TEXT3 = text3
+                Texture2DProgram.TEXT4 = text4
             }
 
             else -> result.notImplemented()

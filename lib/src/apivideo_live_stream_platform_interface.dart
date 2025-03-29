@@ -83,7 +83,7 @@ abstract class ApiVideoLiveStreamPlatform extends PlatformInterface {
     throw UnimplementedError('getVideoSize() has not been implemented.');
   }
 
-  Future<void> setScore({required String score}) {
+  Future<void> setScore({required String text1, required String text2, required String text3, required String text4}) {
     throw UnimplementedError('setScore() has not been implemented.');
   }
 
