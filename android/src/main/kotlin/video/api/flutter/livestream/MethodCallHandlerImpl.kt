@@ -243,6 +243,9 @@ class MethodCallHandlerImpl(
                 val turn1 = call.argument<String?>("turn1") ?: ""
                 val score2 = call.argument<String?>("score2") ?: ""
                 val turn2 = call.argument<String?>("turn2") ?: ""
+                val link1 = call.argument<String?>("link1") ?: ""
+                val link2 = call.argument<String?>("link2") ?: ""
+                val link3 = call.argument<String?>("link3") ?: ""
                 Texture2DProgram.TEXT1 = text1
                 Texture2DProgram.TEXT2 = text2
                 Texture2DProgram.TEXT3 = text3
@@ -251,6 +254,9 @@ class MethodCallHandlerImpl(
                 Texture2DProgram.TURN1 = turn1
                 Texture2DProgram.SCORE2 = score2
                 Texture2DProgram.TURN2 = turn2
+                Texture2DProgram.LINK1 = link1
+                Texture2DProgram.LINK2 = link2
+                Texture2DProgram.LINK3 = link3
             }
 
             else -> result.notImplemented()

@@ -105,8 +105,19 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
   }
 
   @override
-  Future<void> setScore({required String text1, required String text2, required String text3, required String text4,
-  required String score1, required String turn1, required String score2, required String turn2}) {
+  Future<void> setScore({
+    required String text1,
+    required String text2,
+    required String text3,
+    required String text4,
+    required String score1,
+    required String turn1,
+    required String score2,
+    required String turn2,
+    required String link1,
+    required String link2,
+    required String link3,
+  }) {
     return _channel.invokeMethod('setScore', <String, dynamic>{
       'text1': text1,
       'text2': text2,
@@ -116,6 +127,9 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
       'turn1': turn1,
       'score2': score2,
       'turn2': turn2,
+      'link1': link1,
+      'link2': link2,
+      'link3': link3,
     });
   }
 
