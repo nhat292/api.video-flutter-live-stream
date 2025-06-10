@@ -204,19 +204,28 @@ class ApiVideoLiveStreamController {
     required String link1,
     required String link2,
     required String link3,
+    required String matchScore1,
+    required String matchScore2,
+    required String point1,
+    required String point2,
   }) {
     return _platform.setScore(
-        text1: text1,
-        text2: text2,
-        text3: text3,
-        text4: text4,
-        score1: score1,
-        turn1: turn1,
-        score2: score2,
-        turn2: turn2,
-        link1: link1,
-        link2: link2,
-        link3: link3);
+      text1: text1,
+      text2: text2,
+      text3: text3,
+      text4: text4,
+      score1: score1,
+      turn1: turn1,
+      score2: score2,
+      turn2: turn2,
+      link1: link1,
+      link2: link2,
+      link3: link3,
+      matchScore1: matchScore1,
+      matchScore2: matchScore2,
+      point1: point1,
+      point2: point2,
+    );
   }
 
   /// Builds the preview widget.
