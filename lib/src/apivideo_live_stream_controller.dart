@@ -206,8 +206,9 @@ class ApiVideoLiveStreamController {
     required String link3,
     required String matchScore1,
     required String matchScore2,
-    required String point1,
-    required String point2,
+    String? point1,
+    String? point2,
+    bool isTennis = false,
   }) {
     return _platform.setScore(
       text1: text1,
@@ -225,6 +226,7 @@ class ApiVideoLiveStreamController {
       matchScore2: matchScore2,
       point1: point1,
       point2: point2,
+      isTennis: isTennis,
     );
   }
 

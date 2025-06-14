@@ -119,8 +119,9 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
     required String link3,
     required String matchScore1,
     required String matchScore2,
-    required String point1,
-    required String point2,
+    String? point1,
+    String? point2,
+    bool isTennis = false,
   }) {
     return _channel.invokeMethod('setScore', <String, dynamic>{
       'text1': text1,
@@ -137,7 +138,8 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
       'matchScore1': matchScore1,
       'matchScore2': matchScore2,
       'point1': point1,
-      'point2': point2
+      'point2': point2,
+      'isTennis': isTennis,
     });
   }
 

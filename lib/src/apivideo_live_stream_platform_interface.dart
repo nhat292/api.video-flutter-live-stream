@@ -97,8 +97,9 @@ abstract class ApiVideoLiveStreamPlatform extends PlatformInterface {
     required String link3,
     required String matchScore1,
     required String matchScore2,
-    required String point1,
-    required String point2,
+    String? point1,
+    String? point2,
+    bool isTennis = false,
   }) {
     throw UnimplementedError('setScore() has not been implemented.');
   }
