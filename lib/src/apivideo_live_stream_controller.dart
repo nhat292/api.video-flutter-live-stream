@@ -234,6 +234,15 @@ class ApiVideoLiveStreamController {
     );
   }
 
+  /// Zoom
+  void setZoom(double zoom) {
+    _platform.setZoom(zoom);
+  }
+
+  Future<double> getMaxZoom() {
+    return _platform.getMaxZoom();
+  }
+
   /// Builds the preview widget.
   @internal
   Widget buildPreview() {

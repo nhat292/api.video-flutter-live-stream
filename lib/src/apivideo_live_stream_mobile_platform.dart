@@ -6,8 +6,9 @@ import 'types.dart';
 
 /// Controller of the live streaming
 class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
-  final MethodChannel _channel =
-      const MethodChannel('video.api.livestream/controller');
+  final MethodChannel _channel = const MethodChannel(
+    'video.api.livestream/controller',
+  );
 
   /// Registers this class as the default instance of [PathProviderPlatform].
   static void registerWith() {
@@ -16,8 +17,8 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
 
   @override
   Future<int?> initialize() async {
-    final Map<String, dynamic>? reply =
-        await _channel.invokeMapMethod<String, dynamic>('create');
+    final Map<String, dynamic>? reply = await _channel
+        .invokeMapMethod<String, dynamic>('create');
     return reply!['textureId']! as int;
   }
 
@@ -37,8 +38,10 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
   }
 
   @override
-  Future<void> startStreaming(
-      {required String streamKey, required String url}) {
+  Future<void> startStreaming({
+    required String streamKey,
+    required String url,
+  }) {
     return _channel.invokeMethod('startStreaming', <String, dynamic>{
       'streamKey': streamKey,
       'url': url,
@@ -69,8 +72,9 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
 
   @override
   Future<void> setCameraPosition(CameraPosition cameraPosition) {
-    return _channel.invokeMethod('setCameraPosition',
-        <String, dynamic>{'position': cameraPosition.toJson()});
+    return _channel.invokeMethod('setCameraPosition', <String, dynamic>{
+      'position': cameraPosition.toJson(),
+    });
   }
 
   @override
@@ -82,8 +86,9 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
 
   @override
   Future<void> setIsMuted(bool isMuted) {
-    return _channel
-        .invokeMethod('setIsMuted', <String, dynamic>{'isMuted': isMuted});
+    return _channel.invokeMethod('setIsMuted', <String, dynamic>{
+      'isMuted': isMuted,
+    });
   }
 
   @override
@@ -147,6 +152,18 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
     });
   }
 
+  @override
+  void setZoom(double zoom) {
+    _channel.invokeMethod('setZoom', <String, dynamic>{'zoom': zoom});
+  }
+
+  @override
+  Future<double> getMaxZoom() async {
+    final Map<dynamic, dynamic> reply =
+        await _channel.invokeMethod('getMaxZoom') as Map;
+    return reply['zoom'] as double;
+  }
+
   /// Builds the preview widget.
   @override
   Widget buildPreview(int textureId) {
@@ -155,9 +172,9 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
 
   @override
   Stream<LiveStreamingEvent> liveStreamingEventsFor(int textureId) {
-    return EventChannel('video.api.livestream/events')
-        .receiveBroadcastStream()
-        .map((dynamic map) {
+    return EventChannel(
+      'video.api.livestream/events',
+    ).receiveBroadcastStream().map((dynamic map) {
       final Map<dynamic, dynamic> event = map as Map<dynamic, dynamic>;
       switch (event['type']) {
         case 'connected':
@@ -166,12 +183,14 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
           return LiveStreamingEvent(type: LiveStreamingEventType.disconnected);
         case 'connectionFailed':
           return LiveStreamingEvent(
-              type: LiveStreamingEventType.connectionFailed,
-              data: event['message']);
+            type: LiveStreamingEventType.connectionFailed,
+            data: event['message'],
+          );
         case 'videoSizeChanged':
           return LiveStreamingEvent(
-              type: LiveStreamingEventType.videoSizeChanged,
-              data: Size(event['width'] as double, event['height'] as double));
+            type: LiveStreamingEventType.videoSizeChanged,
+            data: Size(event['width'] as double, event['height'] as double),
+          );
         default:
           return LiveStreamingEvent(type: LiveStreamingEventType.unknown);
       }

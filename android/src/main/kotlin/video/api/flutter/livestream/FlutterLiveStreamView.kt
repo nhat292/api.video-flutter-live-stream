@@ -202,6 +202,14 @@ class FlutterLiveStreamView(
         }
     }
 
+    fun setZoom(zoom: Float) {
+        streamer.setZoom(zoom)
+    }
+
+    fun getMaxZoom(): Float {
+        return streamer.getMaxZoom()
+    }
+
     fun startPreview(onSuccess: () -> Unit, onError: (Exception) -> Unit) {
         permissionsManager.requestPermission(
             Manifest.permission.CAMERA,

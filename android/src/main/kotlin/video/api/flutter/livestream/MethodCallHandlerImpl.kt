@@ -273,6 +273,20 @@ class MethodCallHandlerImpl(
                 Texture2DProgram.TB_SCORE2 = tbScore2
             }
 
+            "setZoom" -> {
+                val zoom = (call.argument<Double>("zoom") ?: 1.0).toFloat()
+                flutterView?.setZoom(zoom)
+                result.success(null)
+            }
+
+            "getMaxZoom" -> {
+                try {
+                    result.success(mapOf("zoom" to flutterView?.getMaxZoom()))
+                } catch (e: Exception) {
+                    result.error("failed_to_get_max_zoom", e.message, null)
+                }
+            }
+
             else -> result.notImplemented()
         }
     }
