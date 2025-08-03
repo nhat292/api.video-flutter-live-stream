@@ -36,32 +36,35 @@ class ApiVideoLiveStreamController {
   List<ApiVideoLiveStreamWidgetListener> _widgetListeners = [];
 
   /// Creates a new [ApiVideoLiveStreamController] instance.
-  ApiVideoLiveStreamController(
-      {required AudioConfig initialAudioConfig,
-      required VideoConfig initialVideoConfig,
-      CameraPosition initialCameraPosition = CameraPosition.back,
-      VoidCallback? onConnectionSuccess,
-      Function(String)? onConnectionFailed,
-      VoidCallback? onDisconnection,
-      Function(Exception)? onError})
-      : _initialVideoConfig = initialVideoConfig,
-        _initialAudioConfig = initialAudioConfig,
-        _initialCameraPosition = initialCameraPosition {
-    _eventsListeners.add(ApiVideoLiveStreamEventsListener(
+  ApiVideoLiveStreamController({
+    required AudioConfig initialAudioConfig,
+    required VideoConfig initialVideoConfig,
+    CameraPosition initialCameraPosition = CameraPosition.back,
+    VoidCallback? onConnectionSuccess,
+    Function(String)? onConnectionFailed,
+    VoidCallback? onDisconnection,
+    Function(Exception)? onError,
+  }) : _initialVideoConfig = initialVideoConfig,
+       _initialAudioConfig = initialAudioConfig,
+       _initialCameraPosition = initialCameraPosition {
+    _eventsListeners.add(
+      ApiVideoLiveStreamEventsListener(
         onConnectionSuccess: onConnectionSuccess,
         onConnectionFailed: onConnectionFailed,
         onDisconnection: onDisconnection,
-        onError: onError));
+        onError: onError,
+      ),
+    );
   }
 
-  ApiVideoLiveStreamController.fromListener(
-      {required AudioConfig initialAudioConfig,
-      required VideoConfig initialVideoConfig,
-      CameraPosition initialCameraPosition = CameraPosition.back,
-      ApiVideoLiveStreamEventsListener? listener})
-      : _initialVideoConfig = initialVideoConfig,
-        _initialAudioConfig = initialAudioConfig,
-        _initialCameraPosition = initialCameraPosition {
+  ApiVideoLiveStreamController.fromListener({
+    required AudioConfig initialAudioConfig,
+    required VideoConfig initialVideoConfig,
+    CameraPosition initialCameraPosition = CameraPosition.back,
+    ApiVideoLiveStreamEventsListener? listener,
+  }) : _initialVideoConfig = initialVideoConfig,
+       _initialAudioConfig = initialAudioConfig,
+       _initialCameraPosition = initialCameraPosition {
     if (listener != null) {
       _eventsListeners.add(listener);
     }
@@ -114,9 +117,10 @@ class ApiVideoLiveStreamController {
   }
 
   /// Starts the live stream to the specified "[url]/[streamKey]".
-  Future<void> startStreaming(
-      {required String streamKey,
-      String url = "rtmp://broadcast.api.video/s/"}) async {
+  Future<void> startStreaming({
+    required String streamKey,
+    String url = "rtmp://broadcast.api.video/s/",
+  }) async {
     return _platform.startStreaming(streamKey: streamKey, url: url);
   }
 
@@ -239,8 +243,8 @@ class ApiVideoLiveStreamController {
     _platform.setZoom(zoom);
   }
 
-  Future<double> getMaxZoom() {
-    return _platform.getMaxZoom();
+  Future<Map<String, double>> getZoomRange() {
+    return _platform.getZoomRange();
   }
 
   /// Builds the preview widget.
@@ -331,12 +335,13 @@ class ApiVideoLiveStreamEventsListener {
   /// Gets notified when an error occurs
   final Function(Exception)? onError;
 
-  ApiVideoLiveStreamEventsListener(
-      {this.onConnectionSuccess,
-      this.onConnectionFailed,
-      this.onDisconnection,
-      this.onVideoSizeChanged,
-      this.onError});
+  ApiVideoLiveStreamEventsListener({
+    this.onConnectionSuccess,
+    this.onConnectionFailed,
+    this.onDisconnection,
+    this.onVideoSizeChanged,
+    this.onError,
+  });
 }
 
 class ApiVideoLiveStreamWidgetListener {

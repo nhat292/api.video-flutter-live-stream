@@ -279,9 +279,10 @@ class MethodCallHandlerImpl(
                 result.success(null)
             }
 
-            "getMaxZoom" -> {
+            "getZoomRange" -> {
                 try {
-                    result.success(mapOf("zoom" to flutterView?.getMaxZoom()))
+                    val zoomRange = flutterView?.getZoomRange()
+                    result.success(mapOf("min" to zoomRange?.first, "max" to zoomRange?.second))
                 } catch (e: Exception) {
                     result.error("failed_to_get_max_zoom", e.message, null)
                 }

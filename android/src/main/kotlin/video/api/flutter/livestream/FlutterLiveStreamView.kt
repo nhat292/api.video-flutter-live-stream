@@ -206,8 +206,8 @@ class FlutterLiveStreamView(
         streamer.setZoom(zoom)
     }
 
-    fun getMaxZoom(): Float {
-        return streamer.getMaxZoom()
+    fun getZoomRange(): Pair<Float, Float> {
+        return streamer.getZoomRange()
     }
 
     fun startPreview(onSuccess: () -> Unit, onError: (Exception) -> Unit) {

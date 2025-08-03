@@ -158,10 +158,12 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
   }
 
   @override
-  Future<double> getMaxZoom() async {
+  Future<Map<String, double>> getZoomRange() async {
     final Map<dynamic, dynamic> reply =
-        await _channel.invokeMethod('getMaxZoom') as Map;
-    return reply['zoom'] as double;
+        await _channel.invokeMethod('getZoomRange') as Map;
+    final minZoom = reply['min'] as double;
+    final maxZoom = reply['max'] as double;
+    return {"min": minZoom, "max": maxZoom};
   }
 
   /// Builds the preview widget.
