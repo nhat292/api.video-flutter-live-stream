@@ -74,9 +74,7 @@ class ApiVideoLiveStreamController {
   Future<void> initialize() async {
     _textureId = await _platform.initialize() ?? kUninitializedTextureId;
 
-    _eventSubscription = _platform
-        .liveStreamingEventsFor(_textureId)
-        .listen(_eventListener, onError: _errorListener);
+    _eventSubscription = _platform.liveStreamingEventsFor(_textureId).listen(_eventListener, onError: _errorListener);
 
     for (var listener in [..._widgetListeners]) {
       if (listener.onTextureReady != null) {
@@ -117,10 +115,7 @@ class ApiVideoLiveStreamController {
   }
 
   /// Starts the live stream to the specified "[url]/[streamKey]".
-  Future<void> startStreaming({
-    required String streamKey,
-    String url = "rtmp://broadcast.api.video/s/",
-  }) async {
+  Future<void> startStreaming({required String streamKey, String url = "rtmp://broadcast.api.video/s/"}) async {
     return _platform.startStreaming(streamKey: streamKey, url: url);
   }
 
@@ -215,6 +210,7 @@ class ApiVideoLiveStreamController {
     bool isTennis = false,
     String? tbScore1,
     String? tbScore2,
+    String? tickerText,
   }) {
     return _platform.setScore(
       text1: text1,
@@ -235,6 +231,7 @@ class ApiVideoLiveStreamController {
       isTennis: isTennis,
       tbScore1: tbScore1,
       tbScore2: tbScore2,
+      tickerText: tickerText,
     );
   }
 

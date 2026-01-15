@@ -6,9 +6,7 @@ import 'types.dart';
 
 /// Controller of the live streaming
 class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
-  final MethodChannel _channel = const MethodChannel(
-    'video.api.livestream/controller',
-  );
+  final MethodChannel _channel = const MethodChannel('video.api.livestream/controller');
 
   /// Registers this class as the default instance of [PathProviderPlatform].
   static void registerWith() {
@@ -17,8 +15,7 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
 
   @override
   Future<int?> initialize() async {
-    final Map<String, dynamic>? reply = await _channel
-        .invokeMapMethod<String, dynamic>('create');
+    final Map<String, dynamic>? reply = await _channel.invokeMapMethod<String, dynamic>('create');
     return reply!['textureId']! as int;
   }
 
@@ -38,14 +35,8 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
   }
 
   @override
-  Future<void> startStreaming({
-    required String streamKey,
-    required String url,
-  }) {
-    return _channel.invokeMethod('startStreaming', <String, dynamic>{
-      'streamKey': streamKey,
-      'url': url,
-    });
+  Future<void> startStreaming({required String streamKey, required String url}) {
+    return _channel.invokeMethod('startStreaming', <String, dynamic>{'streamKey': streamKey, 'url': url});
   }
 
   @override
@@ -65,43 +56,35 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
 
   @override
   Future<bool> getIsStreaming() async {
-    final Map<dynamic, dynamic> reply =
-        await _channel.invokeMethod('getIsStreaming') as Map;
+    final Map<dynamic, dynamic> reply = await _channel.invokeMethod('getIsStreaming') as Map;
     return reply['isStreaming'] as bool;
   }
 
   @override
   Future<void> setCameraPosition(CameraPosition cameraPosition) {
-    return _channel.invokeMethod('setCameraPosition', <String, dynamic>{
-      'position': cameraPosition.toJson(),
-    });
+    return _channel.invokeMethod('setCameraPosition', <String, dynamic>{'position': cameraPosition.toJson()});
   }
 
   @override
   Future<CameraPosition> getCameraPosition() async {
-    final Map<dynamic, dynamic> reply =
-        await _channel.invokeMethod('getCameraPosition') as Map;
+    final Map<dynamic, dynamic> reply = await _channel.invokeMethod('getCameraPosition') as Map;
     return CameraPosition.fromJson(reply['position'] as String);
   }
 
   @override
   Future<void> setIsMuted(bool isMuted) {
-    return _channel.invokeMethod('setIsMuted', <String, dynamic>{
-      'isMuted': isMuted,
-    });
+    return _channel.invokeMethod('setIsMuted', <String, dynamic>{'isMuted': isMuted});
   }
 
   @override
   Future<bool> getIsMuted() async {
-    final Map<dynamic, dynamic> reply =
-        await _channel.invokeMethod('getIsMuted') as Map;
+    final Map<dynamic, dynamic> reply = await _channel.invokeMethod('getIsMuted') as Map;
     return reply['isMuted'] as bool;
   }
 
   @override
   Future<Size?> getVideoSize() async {
-    final Map<dynamic, dynamic> reply =
-        await _channel.invokeMethod('getVideoSize') as Map;
+    final Map<dynamic, dynamic> reply = await _channel.invokeMethod('getVideoSize') as Map;
     if (reply.containsKey("width") && reply.containsKey("height")) {
       return Size(reply["width"] as double, reply["height"] as double);
     } else {
@@ -129,6 +112,7 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
     bool isTennis = false,
     String? tbScore1,
     String? tbScore2,
+    String? tickerText,
   }) {
     return _channel.invokeMethod('setScore', <String, dynamic>{
       'text1': text1,
@@ -149,6 +133,7 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
       'isTennis': isTennis,
       'tbScore1': tbScore1,
       'tbScore2': tbScore2,
+      'tickerText': tickerText,
     });
   }
 
@@ -159,8 +144,7 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
 
   @override
   Future<Map<String, double>> getZoomRange() async {
-    final Map<dynamic, dynamic> reply =
-        await _channel.invokeMethod('getZoomRange') as Map;
+    final Map<dynamic, dynamic> reply = await _channel.invokeMethod('getZoomRange') as Map;
     final minZoom = reply['min'] as double;
     final maxZoom = reply['max'] as double;
     return {"min": minZoom, "max": maxZoom};
@@ -174,9 +158,7 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
 
   @override
   Stream<LiveStreamingEvent> liveStreamingEventsFor(int textureId) {
-    return EventChannel(
-      'video.api.livestream/events',
-    ).receiveBroadcastStream().map((dynamic map) {
+    return EventChannel('video.api.livestream/events').receiveBroadcastStream().map((dynamic map) {
       final Map<dynamic, dynamic> event = map as Map<dynamic, dynamic>;
       switch (event['type']) {
         case 'connected':
@@ -184,10 +166,7 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
         case 'disconnected':
           return LiveStreamingEvent(type: LiveStreamingEventType.disconnected);
         case 'connectionFailed':
-          return LiveStreamingEvent(
-            type: LiveStreamingEventType.connectionFailed,
-            data: event['message'],
-          );
+          return LiveStreamingEvent(type: LiveStreamingEventType.connectionFailed, data: event['message']);
         case 'videoSizeChanged':
           return LiveStreamingEvent(
             type: LiveStreamingEventType.videoSizeChanged,

@@ -253,6 +253,7 @@ class MethodCallHandlerImpl(
                 val isTennis = call.argument<Boolean?>("isTennis") ?: false
                 val tbScore1 = call.argument<String?>("tbScore1") ?: null
                 val tbScore2 = call.argument<String?>("tbScore2") ?: null
+                val tickerText = call.argument<String?>("tickerText") ?: ""
                 Texture2DProgram.TEXT1 = text1
                 Texture2DProgram.TEXT2 = text2
                 Texture2DProgram.TEXT3 = text3
@@ -271,6 +272,7 @@ class MethodCallHandlerImpl(
                 Texture2DProgram.IS_TENNIS = isTennis
                 Texture2DProgram.TB_SCORE1 = tbScore1
                 Texture2DProgram.TB_SCORE2 = tbScore2
+                Texture2DProgram.TICKER_TEXT = tickerText
             }
 
             "setZoom" -> {
