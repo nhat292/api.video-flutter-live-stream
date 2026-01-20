@@ -244,6 +244,10 @@ class ApiVideoLiveStreamController {
     return _platform.getZoomRange();
   }
 
+  Future<bool> getResetTickerText() {
+    return _platform.getResetTickerText();
+  }
+
   /// Builds the preview widget.
   @internal
   Widget buildPreview() {

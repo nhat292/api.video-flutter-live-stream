@@ -290,6 +290,10 @@ class MethodCallHandlerImpl(
                 }
             }
 
+            "getResetTickerText" -> {
+                result.success(Texture2DProgram.RESET_TICKER_TEXT)
+            }
+
             else -> result.notImplemented()
         }
     }

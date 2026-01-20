@@ -114,6 +114,10 @@ abstract class ApiVideoLiveStreamPlatform extends PlatformInterface {
     throw UnimplementedError('getZoomRange() has not been implemented.');
   }
 
+  Future<bool> getResetTickerText() {
+    throw UnimplementedError('getResetTickerText() has not been implemented.');
+  }
+
   /// Returns a Stream of [LiveStreamingEvent]s.
   Stream<LiveStreamingEvent> liveStreamingEventsFor(int textureId) {
     throw UnimplementedError('liveStreamingEventsFor() has not been implemented.');

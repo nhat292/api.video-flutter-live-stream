@@ -150,6 +150,12 @@ class ApiVideoMobileLiveStreamPlatform extends ApiVideoLiveStreamPlatform {
     return {"min": minZoom, "max": maxZoom};
   }
 
+  @override
+  Future<bool> getResetTickerText() async {
+    final reset = await _channel.invokeMethod('getResetTickerText') as bool;
+    return reset;
+  }
+
   /// Builds the preview widget.
   @override
   Widget buildPreview(int textureId) {
