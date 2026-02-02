@@ -58,6 +58,6 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
     implementation 'androidx.appcompat:appcompat:1.6.1'
 
-    implementation 'com.github.nhat292.StreamPack:streampack:ticker_text_7-SNAPSHOT'
-    implementation 'com.github.nhat292.StreamPack:streampack-extension-rtmp:ticker_text_7-SNAPSHOT'
+    implementation 'com.github.nhat292.StreamPack:streampack:v2-SNAPSHOT'
+    implementation 'com.github.nhat292.StreamPack:streampack-extension-rtmp:v2-SNAPSHOT'
 }
